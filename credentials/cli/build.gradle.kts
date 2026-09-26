@@ -1,0 +1,33 @@
+plugins {
+    application
+    `maven-publish`
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+    sourceSets {
+        val main by getting {
+            java.setSrcDirs(listOf("src/product/java"))
+            resources.setSrcDirs(listOf("src/product/resources"))
+        }
+        val test by getting {
+            java.setSrcDirs(listOf("src/develop/java"))
+            resources.setSrcDirs(listOf("src/develop/resources"))
+        }
+    }
+}
+
+val algitesSecurityLibraryVersion = providers.gradleProperty("algites.security.library.version").orElse("1.0-SNAPSHOT")
+
+dependencies {
+    implementation("eu.algites.lib.security:pub.lib.Security_credentials.coreimpl:${algitesSecurityLibraryVersion.get()}")
+    runtimeOnly("eu.algites.lib.security:pub.lib.Security_credentials.winstore:${algitesSecurityLibraryVersion.get()}")
+    runtimeOnly("eu.algites.lib.security:pub.lib.Security_credentials.macstore:${algitesSecurityLibraryVersion.get()}")
+    runtimeOnly("eu.algites.lib.security:pub.lib.Security_credentials.secretservicestore:${algitesSecurityLibraryVersion.get()}")
+}
+
+application {
+    mainClass.set("eu.algites.tool.security.credentials.cli.AIcCredentialCli")
+}
