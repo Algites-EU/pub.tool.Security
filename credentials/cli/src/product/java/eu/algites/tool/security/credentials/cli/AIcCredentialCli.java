@@ -11,6 +11,9 @@ import eu.algites.lib.security.credentials.core.AIxCredentialException;
 
 import java.io.Console;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -294,18 +297,41 @@ public final class AIcCredentialCli {
         }
     }
 
-    private static char[] readCredentialDocumentInput(String aFile) {
+    private static char[] readCredentialDocumentInput(String aSource) {
         try {
-            if (aFile == null || "-".equals(aFile)) {
+            if (aSource == null || "-".equals(aSource)) {
                 return new String(System.in.readAllBytes(), StandardCharsets.UTF_8).toCharArray();
             }
-            Path locPath = Path.of(aFile);
+
+            URL locUrl = parseUrl(aSource);
+            if (locUrl != null) {
+                try (java.io.InputStream locInput = locUrl.openStream()) {
+                    return new String(locInput.readAllBytes(), StandardCharsets.UTF_8).toCharArray();
+                }
+            }
+
+            Path locPath = Path.of(aSource);
             if (!Files.isRegularFile(locPath)) {
                 throw new AIxCredentialException("Credential document file does not exist: " + locPath);
             }
             return Files.readString(locPath, StandardCharsets.UTF_8).toCharArray();
         } catch (IOException aException) {
             throw new AIxCredentialException("Cannot read credential document input.", aException);
+        }
+    }
+
+    private static URL parseUrl(String aSource) {
+        try {
+            URI locUri = new URI(aSource);
+            if (locUri.getScheme() == null || locUri.getScheme().isBlank()) {
+                return null;
+            }
+            if (locUri.getScheme().length() == 1 && aSource.length() > 2 && aSource.charAt(1) == ':') {
+                return null;
+            }
+            return locUri.toURL();
+        } catch (URISyntaxException | IllegalArgumentException | java.net.MalformedURLException aException) {
+            return null;
         }
     }
 
@@ -344,7 +370,7 @@ public final class AIcCredentialCli {
         System.err.println("  algites-credentials status <profile> <basic|bearer|api_key|certificate>");
         System.err.println("  algites-credentials remove <profile> <basic|bearer|api_key|certificate>");
         System.err.println("  algites-credentials env <profile> <basic|bearer|api_key|certificate>");
-        System.err.println("  algites-credentials document-set [<json-file>|-]");
+        System.err.println("  algites-credentials document-set [<path|url|->]");
         System.err.println("  algites-credentials document-status");
         System.err.println("  algites-credentials document-remove");
         System.err.println("  algites-credentials secret-set <secret-id>");
