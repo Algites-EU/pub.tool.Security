@@ -1,10 +1,11 @@
-sourceRepository:
-  id: pub.tool.Security
-  groupId: eu.algites.tool.security
-  name: Algites public security tools
+SourceRepository:
+  Id: pub.tool.Security
+  Name: Algites public security tools
+  Visibility: pub
 
-versionContext:
-  releaseLine: "1"
-  revision: 0
-  qualifierKind: SNAPSHOT
-  qualifierLabel: SNAPSHOT
+GroupId: eu.algites.tool.security
+
+Version:
+  ReleaseLine: "1"
+  Revision: 0
+  QualifierKind: snapshot

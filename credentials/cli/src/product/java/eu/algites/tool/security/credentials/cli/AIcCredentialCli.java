@@ -340,10 +340,10 @@ public final class AIcCredentialCli {
 
     private static void printUsage() {
         System.err.println("Usage:");
-        System.err.println("  algites-credentials set <profile> <basic|bearer|api-key|certificate>");
-        System.err.println("  algites-credentials status <profile> <basic|bearer|api-key|certificate>");
-        System.err.println("  algites-credentials remove <profile> <basic|bearer|api-key|certificate>");
-        System.err.println("  algites-credentials env <profile> <basic|bearer|api-key|certificate>");
+        System.err.println("  algites-credentials set <profile> <basic|bearer|api_key|certificate>");
+        System.err.println("  algites-credentials status <profile> <basic|bearer|api_key|certificate>");
+        System.err.println("  algites-credentials remove <profile> <basic|bearer|api_key|certificate>");
+        System.err.println("  algites-credentials env <profile> <basic|bearer|api_key|certificate>");
         System.err.println("  algites-credentials document-set [<json-file>|-]");
         System.err.println("  algites-credentials document-status");
         System.err.println("  algites-credentials document-remove");
