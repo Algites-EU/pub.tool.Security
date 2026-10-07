@@ -125,8 +125,8 @@ public final class AIcCredentialCli {
                 case BASIC -> {
                     String locUsername = aConsole.readLine("Username: ");
                     char[] locPassword = aConsole.readPassword("Password: ");
-                    requireNonEmpty(locUsername, "Username");
-                    requireNonEmpty(locPassword, "Password");
+                    requireNonEmpty(locUsername, AInCredentialField.USERNAME.getId());
+                    requireNonEmpty(locPassword, AInCredentialField.PASSWORD.getId());
                     locValues.put(AInCredentialField.USERNAME, locUsername.toCharArray());
                     locValues.put(AInCredentialField.PASSWORD, locPassword);
                 }
