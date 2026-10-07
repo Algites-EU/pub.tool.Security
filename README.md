@@ -23,7 +23,7 @@ The repository is organized into security tool domains. Each domain may expose s
 ├── README.md
 └── credentials/
     ├── README.md
-    ├── algites-artifact-set.yml
+    ├── modustro-artifact-set.yml
     ├── cli/
     │   └── src/
     │       └── product/
