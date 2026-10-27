@@ -1,8 +1,8 @@
 package eu.algites.tool.security.credentials.cli;
 
-import eu.algites.lib.security.credentials.core.AIcCredentialResolver;
-import eu.algites.lib.security.credentials.core.AIcCredentialService;
-import eu.algites.lib.security.credentials.core.AIcEnvironmentCredentialProvider;
+import eu.algites.lib.security.credentials.core.impl.standard.AIcCredentialResolver;
+import eu.algites.lib.security.credentials.core.impl.standard.AIcCredentialService;
+import eu.algites.lib.security.credentials.core.impl.standard.AIcEnvironmentCredentialProvider;
 import eu.algites.lib.security.credentials.core.AIcCredential;
 import eu.algites.lib.security.credentials.core.AIcCredentialProfile;
 import eu.algites.lib.security.credentials.core.AInCredentialField;

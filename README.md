@@ -48,9 +48,45 @@ The supported repository build entry point is the **Algites Gradle lifecycle**:
 
 Gradle coordinates repository discovery, validation, dependencies, testing, packaging, and publication. Direct technology-specific repository builds are not a supported build mode.
 
-`credentials/cli` depends on the corresponding `pub.lib.Security` credential artifacts. During bootstrap development, the matching library snapshot must therefore already be available through the configured Algites repositories or `mavenLocal()`.
+`credentials/cli` depends on the corresponding `pub.lib.Security` credential artifacts. During bootstrap development, the matching library snapshot must therefore already be available through the configured Algites repositories or `the Modustro local Maven repository (`~/.modustro/artifact-repos/java/maven`).
 
 ---
+
+### Standalone Security bootstrap (1.1)
+
+Security products built with the current generators use the **1.1** release line
+(`1.1-SNAPSHOT` for Java and unique `1.1.dev…` snapshot versions for Python).
+The previously published **1.0** line is intentionally retained for consumers
+built with the old generators; it is not replaced by this bootstrap.
+
+A standalone, descriptor-driven bootstrap is available without loading the
+unfinished Modustro Builder or remote Gradle settings plugin:
+
+```bash
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap.sh --plan-only
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap.sh --prepare-only
+# Only when ready to publish the verified artifacts to Cloudsmith:
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=remote bash devops/bootstrap.sh --upload
+```
+
+`--prepare-only` runs tests, builds and verifies the Maven publications, promotes
+them to `~/.modustro/artifact-repos/java/maven`, builds and checks declared
+Python wheels/sdists, and publishes those distributions to the local Python
+Simple index under `~/.modustro/artifact-repos/python`. It does not upload to
+Cloudsmith. The result manifests are stored in `build/run/security-bootstrap`.
+The explicit modes `remote`, `local` and `source` control dependency sources,
+not the publication destination. Both `MODUSTRO_HOME` and
+`MODUSTRO_LOCAL_MAVEN_REPOSITORY` can change the local repository location.
+
+`--plan-only` and both publication manifests derive their counts directly from
+`modustro-artifact.yml` declarations. Unspecified Java/Python products are **not**
+implicitly enabled. The locally staged JARs, POMs, Gradle metadata and source
+JARs are verified before promotion. Full integration tests require Gradle 9.2.1
+and the required upstream dependency artifacts.
+
+This repository currently declares **two Java products and no Python
+products**. In local and source modes, publish `pub.lib.Security` 1.1 first;
+`credentials/cli` and `credentials/gradle` require those published APIs.
 
 ## 🔄 Continuous Integration (Algites CI)
 

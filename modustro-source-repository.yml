@@ -11,5 +11,5 @@ GroupId: eu.algites.tool.security
 
 Version:
   ReleaseLineVersion: "1"
-  Revision: 0
+  Revision: 1
   QualifierKind: snapshot

@@ -1,8 +1,8 @@
 package eu.algites.tool.security.credentials.gradle;
 
 import eu.algites.lib.security.credentials.core.AIcCredentialDocument;
-import eu.algites.lib.security.credentials.core.AIcCredentialDocumentProvider;
-import eu.algites.lib.security.credentials.core.AIcCredentialDocumentReader;
+import eu.algites.lib.security.credentials.core.impl.standard.AIcCredentialDocumentProvider;
+import eu.algites.lib.security.credentials.core.impl.standard.AIcCredentialDocumentReader;
 import eu.algites.lib.security.credentials.core.AIcCredentialProfile;
 import eu.algites.lib.security.credentials.core.AIcCredentialValueReference;
 import eu.algites.lib.security.credentials.core.AInCredentialField;
