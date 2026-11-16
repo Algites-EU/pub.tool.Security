@@ -48,7 +48,7 @@ The supported repository build entry point is the **Algites Gradle lifecycle**:
 
 Gradle coordinates repository discovery, validation, dependencies, testing, packaging, and publication. Direct technology-specific repository builds are not a supported build mode.
 
-`credentials/cli` depends on the corresponding `pub.lib.Security` credential artifacts. During bootstrap development, the matching library snapshot must therefore already be available through the configured Algites repositories or `the Modustro local Maven repository (`~/.modustro/artifact-repos/java/maven`).
+`credentials/cli` depends on the corresponding `pub.lib.Security` credential artifacts. During bootstrap development, the matching library snapshot must therefore already be available through the configured Algites repositories or the Modustro local Maven repository (`~/.modustro/artifact-repos/java/maven`).
 
 ---
 
@@ -63,17 +63,17 @@ A standalone, descriptor-driven bootstrap is available without loading the
 unfinished Modustro Builder or remote Gradle settings plugin:
 
 ```bash
-MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap.sh --plan-only
-MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap.sh --prepare-only
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap/bootstrap.sh --plan-only
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=local bash devops/bootstrap/bootstrap.sh --prepare-only
 # Only when ready to publish the verified artifacts to Cloudsmith:
-MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=remote bash devops/bootstrap.sh --upload
+MODUSTRO_BOOTSTRAP_DEPENDENCY_MODE=remote bash devops/bootstrap/bootstrap.sh --upload
 ```
 
 `--prepare-only` runs tests, builds and verifies the Maven publications, promotes
 them to `~/.modustro/artifact-repos/java/maven`, builds and checks declared
 Python wheels/sdists, and publishes those distributions to the local Python
 Simple index under `~/.modustro/artifact-repos/python`. It does not upload to
-Cloudsmith. The result manifests are stored in `build/run/security-bootstrap`.
+Cloudsmith. The result manifests are stored under `build/run/bootstrap/<run-id>/`; the legacy `devops/bootstrap.sh` remains an alias.
 The explicit modes `remote`, `local` and `source` control dependency sources,
 not the publication destination. Both `MODUSTRO_HOME` and
 `MODUSTRO_LOCAL_MAVEN_REPOSITORY` can change the local repository location.
@@ -85,7 +85,7 @@ JARs are verified before promotion. Full integration tests require Gradle 9.2.1
 and the required upstream dependency artifacts.
 
 This repository currently declares **two Java products and no Python
-products**. In local and source modes, publish `pub.lib.Security` 1.1 first;
+products**. In local mode, prepare `pub.lib.Security` 1.1 first; source mode also discovers and prepares the sibling checkout automatically;
 `credentials/cli` and `credentials/gradle` require those published APIs.
 
 ## 🔄 Continuous Integration (Algites CI)
@@ -165,3 +165,13 @@ See:
 ---
 
 **© Algites**
+
+### Generated source policy during standalone bootstrap
+
+The transitional bootstrap applies the same technology-generated source
+policy as `pub.lib.Security`, using the identical
+`devops/bootstrap/generated_source_policy.py` helper. This repository has
+no configured Defs/SDO generators and currently owns no `.gen` roots;
+bootstrap therefore fails if any `src/<branch>/java.gen` or
+`src/<branch>/python.gen` directory appears without registering a generator.
+Handwritten sources and `config.gen` are unaffected.
